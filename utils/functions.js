@@ -4,16 +4,17 @@ const loadShader = async (url) => {
     return sourceCode
 }
 
-const loadImage = async(url)=>{
+const loadImage = async (url) => {
     const image = new Image()
     image.src = url
     await image.decode()
     return image;
 }
 
-const checkCompileErrors = (gl,shader, title) =>{
-    if(!gl.getShaderParameter(shader, gl.COMPILE_STATUS)){
+const hasCompileErrors = (gl, shader, title) => {
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
         console.error(`ERRROR compiling shader: ${title}`, gl.getShaderInfoLog(shader))
+        return false;
     }
-    return
+    return true;
 }

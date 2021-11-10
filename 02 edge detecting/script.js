@@ -7,16 +7,18 @@
         -1, -1,
         1, 1,
         1, -1
-    ]);
+    ])
 
     const imageUrl = "images/colored.jpeg" 
 
     const vertexShaderSourceCode = await loadShader("shaders/vertexShader.vert")
     const fragmentShadeSourceCode = await loadShader("shaders/framgentShader.frag")
+
     /** @type {HTMLimageFile} */
     const image = await loadImage(imageUrl);
 
     const canvas = document.getElementById("webgl-canvas")
+    
     /** @type {WebGLRenderingContext} */
     const gl = canvas.getContext("webgl")
     
@@ -25,13 +27,13 @@
         return
     }
 
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true)
     canvas.width = image.naturalWidth
     canvas.height = image.naturalHeight
 
     gl.viewport(0, 0, canvas.width, canvas.height)
-    gl.clearColor(0.25, 0.25, 0.8, 09) //Just setting
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPT_BUFFER_BIT) //do the job TOUNDERSTAND ինչ է սա COLOR_BUFFER_BIT և DEPT_BUFFER_BIT ?????
+    gl.clearColor(0.0, 0.0, 0.0, 0.0) 
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPT_BUFFER_BIT) 
 
     const vertexShader = gl.createShader(gl.VERTEX_SHADER)
     const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER)
@@ -40,9 +42,13 @@
     gl.shaderSource(fragmentShader, fragmentShadeSourceCode)
 
     gl.compileShader(vertexShader)
-    checkCompileErrors(gl, vertexShader, "vertexShader")
+    if(!hasCompileErrors(gl, vertexShader, "vertexShader")){
+        return
+    }
     gl.compileShader(fragmentShader)
-    checkCompileErrors(gl, fragmentShader, "vertexShader")
+    if(!hasCompileErrors(gl, fragmentShader, "vertexShader")){
+        return
+    }
 
     const program = gl.createProgram()
     gl.attachShader(program, vertexShader)
@@ -62,8 +68,8 @@
     }
 
 
-    const triangleVerticesBufferObject = gl.createBuffer();  //պարզաբանել էս մասը
-    gl.bindBuffer(gl.ARRAY_BUFFER, triangleVerticesBufferObject) //պարզաբանել էս մասը
+    const triangleVerticesBufferObject = gl.createBuffer()
+    gl.bindBuffer(gl.ARRAY_BUFFER, triangleVerticesBufferObject)
     gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW)
 
 
