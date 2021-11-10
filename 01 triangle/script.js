@@ -7,8 +7,7 @@
 		0.3, 0.2,    0.8, 0.3, 1.0,
 		-0.2, -0.8,  0.6, 0.0, 0.8,
 		0.9, -0.3,   0.4, 0.5, 0.5,
-
-	];
+]
     
     const vertexShaderText = await loadShader("shaders/vertexShader.vert")
     const fragmentShaderText = await loadShader("shaders/framgentShader.frag")
@@ -38,9 +37,13 @@
     gl.shaderSource(fragmentShader, fragmentShaderText)
 
     gl.compileShader(vertexShader)
-    checkCompileErrors(gl, vertexShader, "vertexShader")
+    if(!hasCompileErrors(gl, vertexShader, "vertexShader")){
+        return
+    }
     gl.compileShader(fragmentShader)
-    checkCompileErrors(gl, fragmentShader, "vertexShader")
+    if(!hasCompileErrors(gl, fragmentShader, "vertexShader")){
+        return
+    }
 
     const program = gl.createProgram()
     gl.attachShader(program, vertexShader)
@@ -49,7 +52,7 @@
 
     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
         console.error("ERROR linking programm", gl.getProgramInfoLog(program))
-        return;
+        return
     }
 
     gl.validateProgram(program)
